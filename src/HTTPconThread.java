@@ -12,9 +12,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
 public class HTTPconThread extends Thread{
 	private String url=null;
-	public HTTPconThread(String url){
+	private int time =0;
+	public HTTPconThread(String url, int time){
 		this.setProxy();
 		this.url=url;
+		this.time = time;
 		this.start();
 	}
 	@Override
@@ -22,7 +24,7 @@ public class HTTPconThread extends Thread{
 		while(true){
 			this.testIt(url);
 			try {
-				sleep(5*60*1000); // sleep thread to get 5 mins interval.
+				sleep(time); // sleep thread to get 5 mins interval.
 			} catch (InterruptedException e) {
 				System.err.println("Thread sleep interupted...");
 				e.printStackTrace();
@@ -50,16 +52,20 @@ public class HTTPconThread extends Thread{
 			System.out.println("The site is up. Response Code : " + ((HttpURLConnection) con).getResponseCode());
 		} catch (MalformedURLException e) {
 			System.out.println("Invalid URL.");
+			System.exit(1);
 			e.printStackTrace();
 		}catch(UnknownHostException e){
 			System.out.println("Cannot acess the website.");
+			System.exit(1);
 		} catch (IOException e) {
 			System.out.println("error connecting with website.");
+			System.exit(1);
 			// here would be the e-mail code..
 			e.printStackTrace();
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	private void setProxy(){

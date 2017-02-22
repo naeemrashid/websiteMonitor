@@ -16,7 +16,6 @@ public class HTTPmain extends Application{
 //		scene.getStylesheets().add(getClass().getResource("/stylesheet.css").toExternalForm());
 		stage.setScene(scene);
 		stage.show();
-		// TODO Auto-generated method stub
 		
 	}
 	public static void main(String[] args){

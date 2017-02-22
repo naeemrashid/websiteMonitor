@@ -1,8 +1,8 @@
 
-import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
@@ -18,7 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -35,13 +35,15 @@ public class HTTPcontroller implements Initializable{
 	    private JFXTextField urlBar;
 
 	    @FXML
-	    private JFXTextField time;
+	    private JFXTextField timeBar;
 
 	    @FXML
 	    private JFXButton addButton;
 
 	    @FXML
 	    private JFXTreeTableView<Details> treeView;
+	    @FXML
+	    private JFXPopup popUp;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -58,9 +60,25 @@ public class HTTPcontroller implements Initializable{
 //		});
 //		
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-			if(urlBar.getText().equals("") || time.equals("")){
-				System.out.println("field required.");
+			String url = urlBar.getText();
+			String timeText = timeBar.getText();
+			String[] timeStr = timeText.split(":");
+			int time = 1;
+			if(!timeStr[0].equals("00")){
+				time *=Integer.parseInt(timeStr[0]);
+				
+			}if(!timeStr[1].equals("00")){
+				time *= Integer.parseInt(timeStr[1]);
+			}if(!timeStr[1].equals("00")){
+				time*=Integer.parseInt(timeStr[2]);
 			}
+			HTTPconThread thread = new HTTPconThread(url,time );
+//			if(e.getButton()==MouseButton.SECONDARY){
+//				System.out.println("Right click detected.");
+//			}
+//			if(urlBar.getText().equals(" || time.equals("")){
+//				System.out.println("field required.");
+//			}
 //			System.out.println(urlBar.getText());
 //			System.out.println(time.getText());
 		});
@@ -121,8 +139,17 @@ public class HTTPcontroller implements Initializable{
 		final TreeItem<Details> root = new RecursiveTreeItem<Details>(Details, RecursiveTreeObject::getChildren);
 		treeView.getColumns().addAll(urlCol,statusCol,timeCol,dateCol,emailCol);
 		treeView.setRoot(root);
+		
+		
+		treeView.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+			if(e.getButton()==MouseButton.SECONDARY){
+				System.out.println("Right click detected.");
+//				popUp.show(JFXPopup.PopupVPosition.TOP, PopupHPosition.RIGHT);
+			}
+		});
 		treeView.setShowRoot(false);
-		};
+		  
+		}
 	}
 	class Details extends RecursiveTreeObject<Details>{
 		StringProperty url;
