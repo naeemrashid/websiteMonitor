@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="691.0" style="-fx-background-color: #ffffffff;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HTTPcontroller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HTTPcontroller">
    <top>
       <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -23,8 +23,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXTextField fx:id="urlBar" promptText="https://www.example.com/" />
-            <JFXTextField fx:id="time" promptText="hh:mm:ss" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="urlBar" focusColor="#15e80abf" promptText="https://www.example.com/" unFocusColor="#24d010" />
+            <JFXTextField fx:id="time" focusColor="#11e81fbf" promptText="hh:mm:ss" unFocusColor="#1fd70e" GridPane.columnIndex="1" />
             <JFXButton fx:id="addButton" prefHeight="0.0" prefWidth="69.0" style="-fx-background-color: #009900;" text="ADD" GridPane.columnIndex="2">
                <font>
                   <Font size="13.0" />
@@ -34,12 +34,15 @@
                </padding>
             </JFXButton>
          </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
       </GridPane>
    </top>
    <center>
       <JFXTreeTableView fx:id="treeView" prefHeight="370.0" prefWidth="682.0" BorderPane.alignment="CENTER">
          <padding>
-            <Insets top="25.0" />
+            <Insets top="10.0" />
          </padding>
       </JFXTreeTableView>
    </center>

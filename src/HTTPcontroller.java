@@ -19,6 +19,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -44,18 +45,25 @@ public class HTTPcontroller implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		urlBar.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.ENTER) {
-				System.out.println(urlBar.getText()); //method call
+//		urlBar.setOnKeyPressed(event -> {
+//			if (event.getCode() == KeyCode.ENTER) {
+//				System.out.println(urlBar.getText()); //method call
+//			}
+//		});
+//		
+//		time.setOnKeyPressed(event -> {
+//			if (event.getCode() == KeyCode.ENTER) {
+//				System.out.println(time.getText()); //method call
+//			}
+//		});
+//		
+		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+			if(urlBar.getText().equals("") || time.equals("")){
+				System.out.println("field required.");
 			}
+//			System.out.println(urlBar.getText());
+//			System.out.println(time.getText());
 		});
-		
-		time.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.ENTER) {
-				System.out.println(time.getText()); //method call
-			}
-		});
-		
 		
 		JFXTreeTableColumn<Details, String> urlCol = new JFXTreeTableColumn<>("URL");
 		urlCol.setPrefWidth(200);
