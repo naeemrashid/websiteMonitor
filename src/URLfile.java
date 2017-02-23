@@ -15,19 +15,19 @@ import javafx.collections.ObservableList;
 
 public class URLfile {
 
-	private FileInputStream input;
-	private FileOutputStream output;
-	private  File urlFile;
-	private java.util.Date date = new java.util.Date();
-	private SimpleDateFormat dateFormat;
-	private SimpleDateFormat timeFormat;
-	private URLdetails details;
+	private static  FileInputStream input;
+	private static FileOutputStream output;
+	private static File urlFile;
+	private static java.util.Date date = new java.util.Date();
+	private static SimpleDateFormat dateFormat;
+	private static  SimpleDateFormat timeFormat;
+	private static URLdetails details;
 
 	public URLfile(File file){
 		this.urlFile = file;
 	}
 
-	public  void readUrlFile() throws FileNotFoundException{
+	public   static void readUrlFile() throws FileNotFoundException{
 		Scanner sc = new Scanner(urlFile);
 		while(sc.hasNextLine()){
 			String line = sc.nextLine();
@@ -44,14 +44,14 @@ public class URLfile {
 		sc.close();
 
 	}
-	public void writeUrlFile(String url , String email, int time) throws FileNotFoundException{
+	public static  void writeUrlFile(String url , String email, int time) throws FileNotFoundException{
 		PrintWriter writer = new PrintWriter(urlFile);
 		Scanner sc = new Scanner(urlFile);
 		while(sc.hasNextLine()){
-			
+
 		}
 		writer.println(url+","+email+","+time);
-		
+
 
 	}
 

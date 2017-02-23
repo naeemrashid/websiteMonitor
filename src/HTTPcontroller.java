@@ -77,6 +77,15 @@ public class HTTPcontroller implements Initializable{
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
 			String url = urlBar.getText();
 			String timeText = timeBar.getText();
+			String email = mailBar.getText();
+			int miliSeconds = Integer.parseInt(timeText)*1000;
+			try {
+				URLfile.writeUrlFile(url, email,miliSeconds);
+			} catch (Exception e1) {
+				System.out.println("Error while parsing timeText to int.");
+			}
+			URLdetails details = new URLdetails(url, "?", "?", "?", email);
+			this.getURLdetails().add(details);
 			if(!(url.equals("") && timeBar.equals("")&& mailBar.equals(""))){
 				System.out.println(url +"    "+ timeBar+"   "+mailBar);
 			}
