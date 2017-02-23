@@ -41,10 +41,25 @@ public class HTTPcontroller implements Initializable{
 	    private JFXButton addButton;
 
 	    @FXML
-	    private JFXTreeTableView<Details> treeView;
+	    private JFXTreeTableView<URLdetails> treeView;
 	    @FXML
 	    private JFXPopup popUp;
 
+	    @FXML
+	    private JFXTextField mailBar;
+
+	    private static ObservableList<URLdetails> URLdetails = FXCollections.observableArrayList();
+	    /*setter and getters for urlDetails....
+	     * 
+	     * 
+	     * */
+	public static ObservableList<URLdetails> getURLdetails() {
+			return URLdetails;
+		}
+		
+		/* 
+		 * 
+		 * */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 //		urlBar.setOnKeyPressed(event -> {
@@ -62,17 +77,10 @@ public class HTTPcontroller implements Initializable{
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
 			String url = urlBar.getText();
 			String timeText = timeBar.getText();
-			String[] timeStr = timeText.split(":");
-			int time = 1;
-			if(!timeStr[0].equals("00")){
-				time *=Integer.parseInt(timeStr[0]);
-				
-			}if(!timeStr[1].equals("00")){
-				time *= Integer.parseInt(timeStr[1]);
-			}if(!timeStr[1].equals("00")){
-				time*=Integer.parseInt(timeStr[2]);
+			if(!(url.equals("") && timeBar.equals("")&& mailBar.equals(""))){
+				System.out.println(url +"    "+ timeBar+"   "+mailBar);
 			}
-			HTTPconThread thread = new HTTPconThread(url,time );
+//			HTTPconThread thread = new HTTPconThread(url,time);
 //			if(e.getButton()==MouseButton.SECONDARY){
 //				System.out.println("Right click detected.");
 //			}
@@ -83,60 +91,54 @@ public class HTTPcontroller implements Initializable{
 //			System.out.println(time.getText());
 		});
 		
-		JFXTreeTableColumn<Details, String> urlCol = new JFXTreeTableColumn<>("URL");
+		JFXTreeTableColumn<URLdetails, String> urlCol = new JFXTreeTableColumn<>("URL");
 		urlCol.setPrefWidth(200);
-		urlCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Details,String>, ObservableValue<String>>() {
+		urlCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<URLdetails,String>, ObservableValue<String>>() {
 			
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Details, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<URLdetails, String> param) {
 				return param.getValue().getValue().url;
 			}
 		});
-		JFXTreeTableColumn<Details, String> statusCol = new JFXTreeTableColumn<>("STATUS");
+		JFXTreeTableColumn<URLdetails, String> statusCol = new JFXTreeTableColumn<>("STATUS");
 		statusCol.setPrefWidth(100);
-		statusCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Details,String>, ObservableValue<String>>() {
+		statusCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<URLdetails,String>, ObservableValue<String>>() {
 			
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Details, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<URLdetails, String> param) {
 				return param.getValue().getValue().status;
 			}
 		});
-		JFXTreeTableColumn<Details, String> timeCol = new JFXTreeTableColumn<>("Time");
+		JFXTreeTableColumn<URLdetails, String> timeCol = new JFXTreeTableColumn<>("Time");
 		timeCol.setPrefWidth(100);
-		timeCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Details,String>, ObservableValue<String>>() {
+		timeCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<URLdetails,String>, ObservableValue<String>>() {
 			
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Details, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<URLdetails, String> param) {
 				return param.getValue().getValue().time;
 				
 			}
 		});
-		JFXTreeTableColumn<Details, String> dateCol = new JFXTreeTableColumn<>("Date");
+		JFXTreeTableColumn<URLdetails, String> dateCol = new JFXTreeTableColumn<>("Date");
 		dateCol.setPrefWidth(100);
-		dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Details,String>, ObservableValue<String>>() {
+		dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<URLdetails,String>, ObservableValue<String>>() {
 			
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Details, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<URLdetails, String> param) {
 				return param.getValue().getValue().date;
 			}
 		});
-		JFXTreeTableColumn<Details, String> emailCol = new JFXTreeTableColumn<>("Email");
+		JFXTreeTableColumn<URLdetails, String> emailCol = new JFXTreeTableColumn<>("Email");
 		emailCol.setPrefWidth(200);
-		emailCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Details,String>, ObservableValue<String>>() {
+		emailCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<URLdetails,String>, ObservableValue<String>>() {
 			
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<Details, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<URLdetails, String> param) {
 				return param.getValue().getValue().email;
 			}
 		});
-		ObservableList<Details> Details = FXCollections.observableArrayList();
-		Details.add(new Details("https://www.example.com.pk/","OK","12:30","12-3-2014","example@gmial.com"));
-		Details.add(new Details("https://www.example.com.pk/","OK","11:30","12-2-2014","example@gmial.com"));
-		Details.add(new Details("https://www.example.com.pk/","OK","2:30","12-1-2014","example@gmial.com"));
-		Details.add(new Details("https://www.example.com.pk/","OK","1:30","18-3-2014","example@gmial.com"));
-		Details.add(new Details("https://www.example.com.pk/","OK","1:30","18-3-2014","example@gmial.com"));
-		Details.add(new Details("https://www.example.com.pk/","OK","1:30","18-3-2014","example@gmial.com"));
-		final TreeItem<Details> root = new RecursiveTreeItem<Details>(Details, RecursiveTreeObject::getChildren);
+		
+		final TreeItem<URLdetails> root = new RecursiveTreeItem<URLdetails>(URLdetails, RecursiveTreeObject::getChildren);
 		treeView.getColumns().addAll(urlCol,statusCol,timeCol,dateCol,emailCol);
 		treeView.setRoot(root);
 		
@@ -151,19 +153,6 @@ public class HTTPcontroller implements Initializable{
 		  
 		}
 	}
-	class Details extends RecursiveTreeObject<Details>{
-		StringProperty url;
-		StringProperty status;
-		StringProperty time;
-		StringProperty date;
-		StringProperty email;
-		public Details(String url , String status,String time, String date ,String email){
-			this.url = new SimpleStringProperty(url);
-			this.status = new SimpleStringProperty(status);
-			this.time = new SimpleStringProperty(time);
-			this.date = new SimpleStringProperty(date);
-			this.email = new SimpleStringProperty(email);
-		}
-	}
+	
 
 

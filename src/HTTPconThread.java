@@ -5,18 +5,25 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.cert.Certificate;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.Scanner;
 import java.io.*;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
+
+import javafx.beans.property.SimpleStringProperty;
 public class HTTPconThread extends Thread{
 	private String url=null;
 	private int time =0;
-	public HTTPconThread(String url, int time){
+	private String mail ;
+	private URLdetails details;
+	public HTTPconThread(String url, int time,String mail,URLdetails obj){
 		this.setProxy();
 		this.url=url;
 		this.time = time;
+		this.mail=mail;
+		this.details = details;
 		this.start();
 	}
 	@Override
@@ -38,18 +45,25 @@ public class HTTPconThread extends Thread{
 		URL url;
 		try {
 
-			url = new URL(https_url);
-			URLConnection con;
-			if(https_url.startsWith("http")){
-				con = (HttpURLConnection)url.openConnection();
-			}else{
-				con = (HttpsURLConnection)url.openConnection();
+			 url = new URL(https_url); // create url object for the given string
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			if(https_url.startsWith("https")){
+				System.out.println("Establishing https URL connection. . .");
+				 connection = (HttpsURLConnection) url.openConnection();
 			}
 
-			((HttpURLConnection) con).setRequestMethod("HEAD");
-			con.setConnectTimeout(50000);
-			con.connect();
-			System.out.println("The site is up. Response Code : " + ((HttpURLConnection) con).getResponseCode());
+			((HttpURLConnection) connection).setRequestMethod("HEAD");
+			connection.setConnectTimeout(50000);
+			connection.connect();
+			int responseCode = connection.getResponseCode();
+			System.out.println("The site is up. Response Code : " + responseCode);
+			java.util.Date date = new java.util.Date();
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+//			System.out.println(sdf.format(date));
+//			System.out.println(sdf2.format(date));
+			details.setStatus(new SimpleStringProperty(""+responseCode));
+			details.setTime(new SimpleStringProperty(timeFormat.format(date)));
+			connection.disconnect();
 		} catch (MalformedURLException e) {
 			System.out.println("Invalid URL.");
 			System.exit(1);
