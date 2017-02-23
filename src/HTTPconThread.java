@@ -57,12 +57,11 @@ public class HTTPconThread extends Thread{
 			connection.connect();
 			int responseCode = connection.getResponseCode();
 			System.out.println("The site is up. Response Code : " + responseCode);
-			java.util.Date date = new java.util.Date();
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 //			System.out.println(sdf.format(date));
 //			System.out.println(sdf2.format(date));
 			details.setStatus(new SimpleStringProperty(""+responseCode));
-			details.setTime(new SimpleStringProperty(timeFormat.format(date)));
+			details.setTime(new SimpleStringProperty(TimeAndDate.getTime()));
+			details.setDate(new SimpleStringProperty(TimeAndDate.getDate()));
 			connection.disconnect();
 		} catch (MalformedURLException e) {
 			System.out.println("Invalid URL.");

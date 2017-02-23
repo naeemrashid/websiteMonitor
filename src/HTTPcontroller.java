@@ -10,6 +10,7 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,7 +85,7 @@ public class HTTPcontroller implements Initializable{
 			} catch (Exception e1) {
 				System.out.println("Error while parsing timeText to int.");
 			}
-			URLdetails details = new URLdetails(url, "?", "?", "?", email);
+			URLdetails details = new URLdetails(url,"?", TimeAndDate.getTime(), TimeAndDate.getDate(), email);
 			this.getURLdetails().add(details);
 			if(!(url.equals("") && timeBar.equals("")&& mailBar.equals(""))){
 				System.out.println(url +"    "+ timeBar+"   "+mailBar);
@@ -159,6 +160,7 @@ public class HTTPcontroller implements Initializable{
 			}
 		});
 		treeView.setShowRoot(false);
+		
 		  
 		}
 	}

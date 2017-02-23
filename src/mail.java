@@ -14,12 +14,6 @@ public class mail {
 	  String username;//sender email address
 	  String password; // sender password of the gmail.
 	public static void main (String[] args){
-//		Properties systemProperties = System.getProperties();
-//		systemProperties.setProperty("http.proxyHost","172.16.0.2");
-//		systemProperties.setProperty("http.proxyPort","8080");
-//		systemProperties.setProperty("https.proxyHost","172.16.0.2");
-//		systemProperties.setProperty("https.proxyPort","8080");
-		
 		
 		 String host = "smtp.gmail.com";
 		 String user = "naeemr2014@namal.edu.pk";//user email address
