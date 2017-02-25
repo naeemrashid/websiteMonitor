@@ -22,7 +22,7 @@ public class URLfile {
 	private static String dateFormat;
 	private static  String timeFormat;
 	private static URLdetails details;
-	private static ObservableList<URLdetails> urldetails;
+	private static ObservableList<URLdetails> urldetailList;
 
 	public URLfile(File file){
 		this.urlFile = file;
@@ -41,8 +41,8 @@ public class URLfile {
 			int time = Integer.parseInt(arr[2]);
 //			System.out.println(arr[0]+"?"+timeFormat.format(date)+dateFormat.format(date)+arr[1]);
 			details = new URLdetails(email,"checking",timeFormat,dateFormat,url);
-		    urldetails = HTTPcontroller.getURLdetails();
-			urldetails.add(details);
+		    urldetailList = HTTPcontroller.getURLdetails();
+			urldetailList.add(details);
 			System.out.println("connecting to : "+details.getUrl());
 			try{
 			HTTPconThread thread = new HTTPconThread(url,time,email, details);
@@ -57,7 +57,7 @@ public class URLfile {
 		PrintWriter writer = new PrintWriter(urlFile);
 		writer.println(url+","+email+","+time);
 		details = new URLdetails(email,"checking",timeFormat,dateFormat,url);
-		urldetails.add(details);
+		urldetailList.add(details);
 		System.out.println("connection to : "+details.getUrl());
 //		HTTPconThread thread = new HTTPconThread(url,time,email, details);
 		try{

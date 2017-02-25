@@ -46,4 +46,8 @@ class URLdetails extends RecursiveTreeObject<URLdetails>{
 		public void setTime(StringProperty time) {
 			this.time = time;
 		}
+		@Override
+		public String toString(){
+			return this.url.toString();
+		}
 	}

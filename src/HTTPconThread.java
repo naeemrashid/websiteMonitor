@@ -31,7 +31,7 @@ public class HTTPconThread extends Thread{
 		while(true){
 			this.testIt(url);
 			try {
-				sleep(time); // sleep thread to get 5 mins interval.
+				sleep(time); // sleep thread .
 			} catch (InterruptedException e) {
 				System.err.println("Thread sleep interupted...");
 				e.printStackTrace();
@@ -55,11 +55,11 @@ public class HTTPconThread extends Thread{
 			((HttpURLConnection) connection).setRequestMethod("HEAD");
 			connection.setConnectTimeout(50000);
 			connection.connect();
-			int responseCode = connection.getResponseCode();
-			System.out.println("The site is up. Response Code : " + responseCode);
+			String responseMessage = connection.getResponseMessage();
+			System.out.println("The site is up. Response Code : " + responseMessage);
 //			System.out.println(sdf.format(date));
 //			System.out.println(sdf2.format(date));
-			details.setStatus(new SimpleStringProperty(""+responseCode));
+			details.setStatus(new SimpleStringProperty(responseMessage));
 			details.setTime(new SimpleStringProperty(TimeAndDate.getTime()));
 			details.setDate(new SimpleStringProperty(TimeAndDate.getDate()));
 			connection.disconnect();
