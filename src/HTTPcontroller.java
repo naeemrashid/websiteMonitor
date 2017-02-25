@@ -48,9 +48,9 @@ public class HTTPcontroller implements Initializable{
 
 	    @FXML
 	    private JFXTextField mailBar;
-
 	    private static ObservableList<URLdetails> URLdetails = FXCollections.observableArrayList();
-	    /*setter and getters for urlDetails....
+
+	/*setter and getters for urlDetails....
 	     * 
 	     * 
 	     * */
@@ -84,11 +84,6 @@ public class HTTPcontroller implements Initializable{
 				URLfile.writeUrlFile(url, email,miliSeconds);
 			} catch (Exception e1) {
 				System.out.println("Error while parsing timeText to int.");
-			}
-			URLdetails details = new URLdetails(url,"?", TimeAndDate.getTime(), TimeAndDate.getDate(), email);
-			this.getURLdetails().add(details);
-			if(!(url.equals("") && timeBar.equals("")&& mailBar.equals(""))){
-				System.out.println(url +"    "+ timeBar+"   "+mailBar);
 			}
 //			HTTPconThread thread = new HTTPconThread(url,time);
 //			if(e.getButton()==MouseButton.SECONDARY){

@@ -9,7 +9,7 @@ class URLdetails extends RecursiveTreeObject<URLdetails>{
 		StringProperty time;
 		StringProperty date;
 		StringProperty email;
-		public URLdetails(String url , String status,String time, String date ,String email){
+		public URLdetails(String email , String status,String time, String date ,String url){
 			this.url = new SimpleStringProperty(url);
 			this.status = new SimpleStringProperty(status);
 			this.time = new SimpleStringProperty(time);

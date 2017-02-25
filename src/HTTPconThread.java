@@ -65,20 +65,20 @@ public class HTTPconThread extends Thread{
 			connection.disconnect();
 		} catch (MalformedURLException e) {
 			System.out.println("Invalid URL.");
-			System.exit(1);
+//			System.exit(1);
 			e.printStackTrace();
 		}catch(UnknownHostException e){
 			System.out.println("Cannot acess the website.");
-			System.exit(1);
+//			System.exit(1);
 		} catch (IOException e) {
 			System.out.println("error connecting with website.");
-			System.exit(1);
+//			System.exit(1);
 			// here would be the e-mail code..
 			e.printStackTrace();
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			System.exit(1);
+//			System.exit(1);
 		}
 	}
 	private void setProxy(){

@@ -19,9 +19,10 @@ public class URLfile {
 	private static FileOutputStream output;
 	private static File urlFile;
 	private static java.util.Date date = new java.util.Date();
-	private static SimpleDateFormat dateFormat;
-	private static  SimpleDateFormat timeFormat;
+	private static String dateFormat;
+	private static  String timeFormat;
 	private static URLdetails details;
+	private static ObservableList<URLdetails> urldetails;
 
 	public URLfile(File file){
 		this.urlFile = file;
@@ -32,25 +33,38 @@ public class URLfile {
 		while(sc.hasNextLine()){
 			String line = sc.nextLine();
 			String[] arr = line.split(",");
-			date = new java.util.Date();
-			timeFormat = new SimpleDateFormat("HH:mm:ss");
-			dateFormat = new SimpleDateFormat("dd:MM:YYYY");
-			System.out.println(arr[0]+"?"+timeFormat.format(date)+dateFormat.format(date)+arr[1]);
-			details = new URLdetails(arr[0],"?",timeFormat.format(date),dateFormat.format(date),arr[1]);
-			ObservableList<URLdetails> urldetails = HTTPcontroller.getURLdetails();
+			timeFormat = TimeAndDate.getTime();
+			dateFormat = TimeAndDate.getDate();
+			String email = arr[0];
+			String url = arr[1];
+			System.out.println(arr[0]+arr[1]+arr[2]);
+			int time = Integer.parseInt(arr[2]);
+//			System.out.println(arr[0]+"?"+timeFormat.format(date)+dateFormat.format(date)+arr[1]);
+			details = new URLdetails(email,"checking",timeFormat,dateFormat,url);
+		    urldetails = HTTPcontroller.getURLdetails();
 			urldetails.add(details);
-			//			details.setStatus(new SimpleStringProperty("OK"));
+			System.out.println("connecting to : "+details.getUrl());
+			try{
+			HTTPconThread thread = new HTTPconThread(url,time,email, details);
+			}catch(Exception e){
+				System.err.println("Error while connecting");
+			}
 		}
 		sc.close();
 
 	}
 	public static  void writeUrlFile(String url , String email, int time) throws FileNotFoundException{
 		PrintWriter writer = new PrintWriter(urlFile);
-		Scanner sc = new Scanner(urlFile);
-		while(sc.hasNextLine()){
-
-		}
 		writer.println(url+","+email+","+time);
+		details = new URLdetails(email,"checking",timeFormat,dateFormat,url);
+		urldetails.add(details);
+		System.out.println("connection to : "+details.getUrl());
+//		HTTPconThread thread = new HTTPconThread(url,time,email, details);
+		try{
+			HTTPconThread thread = new HTTPconThread(url,time,email, details);
+			}catch(Exception e){
+				System.err.println("Error while connecting");
+			}
 
 
 	}
