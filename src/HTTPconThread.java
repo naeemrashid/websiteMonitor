@@ -13,28 +13,40 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 public class HTTPconThread extends Thread{
-	private String url=null;
-	private int time =0;
-	private String mail ;
-	private URLdetails details;
-	public HTTPconThread(String url, int time,String mail,URLdetails obj){
-		this.setProxy();
-		this.url=url;
-		this.time = time;
-		this.mail=mail;
-		this.details = details;
-		this.start();
+	private URLdetails obj;
+	private int time;
+	private int id;
+	private boolean stop=false;
+	
+//	public HTTPconThread(String url){
+//		this.testIt(url);
+//	}
+	public HTTPconThread(int id,URLdetails obj,int time){
+		this.obj=obj;
+		this.id = id;
+//		this.setProxy();
+//		logFile = new LogFiles();
+//		logFile.createFile("http://dldir1.qq.com/qqfile/qq/QQ2013/QQ2013Beta2.exe");
 	}
 	@Override
 	public void run(){
 		while(true){
-			this.testIt(url);
+			if(Controller.getList().indexOf(obj)==-1){
+				System.out.println("break it");
+				stop = true;
+				//update database here.
+				break;
+			}
+			if(!stop){
+			this.testIt(obj.getUrl());
 			try {
 				sleep(time); // sleep thread .
 			} catch (InterruptedException e) {
 				System.err.println("Thread sleep interupted...");
 				e.printStackTrace();
+			}
 			}
 			//			this.testIt(url);
 		}
@@ -44,11 +56,10 @@ public class HTTPconThread extends Thread{
 
 		URL url;
 		try {
-
+			
 			 url = new URL(https_url); // create url object for the given string
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			if(https_url.startsWith("https")){
-				System.out.println("Establishing https URL connection. . .");
 				 connection = (HttpsURLConnection) url.openConnection();
 			}
 
@@ -56,27 +67,30 @@ public class HTTPconThread extends Thread{
 			connection.setConnectTimeout(50000);
 			connection.connect();
 			String responseMessage = connection.getResponseMessage();
-			System.out.println("The site is up. Response Code : " + responseMessage);
+			System.out.println(obj.getUrl()+" is up. Response Code : " + responseMessage);
+			connection.disconnect();
 //			System.out.println(sdf.format(date));
 //			System.out.println(sdf2.format(date));
-			details.setStatus(new SimpleStringProperty(responseMessage));
-			details.setTime(new SimpleStringProperty(TimeAndDate.getTime()));
-			details.setDate(new SimpleStringProperty(TimeAndDate.getDate()));
-			connection.disconnect();
+			int index = Controller.getList().indexOf(obj);
+			Controller.getList().get(index).setStatus(responseMessage);
+			Controller.getList().get(index).setTime(TimeAndDate.getTime());
+			DataBase.addLog(id,responseMessage);
+	
 		} catch (MalformedURLException e) {
-			System.out.println("Invalid URL.");
+			System.out.println(obj.getUrl()+"Invalid URL.");
 //			System.exit(1);
 			e.printStackTrace();
 		}catch(UnknownHostException e){
-			System.out.println("Cannot acess the website.");
+			System.out.println(obj.getUrl()+" Cannot acess the website.");
 //			System.exit(1);
 		} catch (IOException e) {
-			System.out.println("error connecting with website.");
+			System.out.println(obj.getUrl()+" Error connecting with website.");
 //			System.exit(1);
 			// here would be the e-mail code..
 			e.printStackTrace();
 		}
 		catch(Exception e){
+			System.out.println("hellow main");
 			e.printStackTrace();
 //			System.exit(1);
 		}
@@ -88,6 +102,10 @@ public class HTTPconThread extends Thread{
 		systemProperties.setProperty("https.proxyHost","172.16.0.2");
 		systemProperties.setProperty("https.proxyPort","8080");
 	}
+//	public static void main (String[] args){
+//		HTTPconThread thread =  new HTTPconThread("https://www.namal.edu.pk/");
+//		thread.start();
+//	}
 
 
 }

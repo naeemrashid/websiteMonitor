@@ -2,58 +2,48 @@ import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMessage.RecipientType;
 
 public class mail {
-	//download javax.mail-1.4.4.4.jar
-	  String username;//sender email address
-	  String password; // sender password of the gmail.
-	public static void main (String[] args){
-		
-		 String host = "smtp.gmail.com";
-		 String user = "naeemr2014@namal.edu.pk";//user email address
-		 String to = "naeemr2014@namal.edu.pk";
-		 String from = "naeemr2014@namal.edu.pk";
-		 String password = "PRliePR9994";
-		 String subject = "website notification email";
-		 String messageText = "website is down .";
-		 boolean sessionDebug = false;
-		 
-		Properties prop = new Properties();
-		prop.put("mail.smtp.auth", "true");
-		prop.put("mail.smtp.starttls.enable", "true");
-		prop.put("mail.smtp.host", host);
-		prop.put("mail.smtp.port", "587");
-		java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-		Session mailSession = Session.getDefaultInstance(prop,null);
-		mailSession.setDebug(sessionDebug);
-		Message msg = new MimeMessage(mailSession);
-		try {
-			msg.setFrom(new InternetAddress(from));
-			InternetAddress[] address = {new InternetAddress(to)};
-			msg.setRecipients(Message.RecipientType.TO, address);
-			msg.setSubject(subject);
-			msg.setText(messageText);
-			
-			Transport transport = mailSession.getTransport("smtp");
-			transport.connect(host,user,password);
-			transport.sendMessage(msg, msg.getAllRecipients());
-			transport.close();
-			System.out.println("Message Sent Sucessfully.");
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		
-	}
 
+	public static void main(String[] args) {
+
+		final String username = "naeemb7070@gmail.com";
+		final String password = "9994naeemb";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("naeemb7070@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse("naeem.rashid.bloch@gmail.com"));
+			message.setSubject("Testing Subject");
+			message.setText("Dear Mail Crawler,"
+				+ "\n\n No spam to my email, please!");
+
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

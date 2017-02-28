@@ -3,48 +3,43 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-class URLdetails extends RecursiveTreeObject<URLdetails>{
-		StringProperty url;
-		StringProperty status;
-		StringProperty time;
-		StringProperty date;
-		StringProperty email;
-		public URLdetails(String email , String status,String time, String date ,String url){
+public class URLdetails {
+	private	StringProperty url;
+	private	StringProperty status;
+	private	StringProperty time;
+	private	StringProperty date;
+	private	StringProperty email;
+		public URLdetails(String url , String status,String time, String date ,String email){
 			this.url = new SimpleStringProperty(url);
 			this.status = new SimpleStringProperty(status);
 			this.time = new SimpleStringProperty(time);
 			this.date = new SimpleStringProperty(date);
 			this.email = new SimpleStringProperty(email);
 		}
-		public StringProperty getUrl() {
-			return url;
+		public String getUrl() {
+			return url.get();
 		}
-		public void setUrl(StringProperty url) {
-			this.url = url;
+		public String getDate() {
+			return date.get();
 		}
-		public StringProperty getDate() {
-			return date;
+		public String getEmail() {
+			return email.get();
 		}
-		public void setDate(StringProperty date) {
-			this.date = date;
+		
+		public String getStatus() {
+			return status.get();
 		}
-		public StringProperty getEmail() {
-			return email;
+		public String getTime() {
+			return time.get();
 		}
-		public void setEmail(StringProperty email) {
-			this.email = email;
+		public void setStatus(String status){
+			this.status = new SimpleStringProperty(status);
 		}
-		public StringProperty getStatus() {
-			return status;
+		public void setTime(String time){
+			this.time = new SimpleStringProperty(time);
 		}
-		public void setStatus(StringProperty status) {
-			this.status = status;
-		}
-		public StringProperty getTime() {
-			return time;
-		}
-		public void setTime(StringProperty time) {
-			this.time = time;
+		public void setDate(String date){
+			this.date = new SimpleStringProperty(date);
 		}
 		@Override
 		public String toString(){

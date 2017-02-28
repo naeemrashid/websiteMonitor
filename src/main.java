@@ -1,8 +1,4 @@
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class HTTPmain extends Application{
+public class main extends Application{
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
@@ -19,18 +16,10 @@ public class HTTPmain extends Application{
 		stage.show();
 		
 	}
+	
 	public static void main(String[] args){
-		
-		File urlFile = new File("Files/urls");
-		try {
-			URLfile url = new URLfile(urlFile);
-			url.readUrlFile();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		};
-//		
 		launch(args);
-		
+		System.exit(1);
 	}
 
 }
