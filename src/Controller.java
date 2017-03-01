@@ -122,7 +122,6 @@ public class Controller implements Initializable{
 				URLdetails newURL =new URLdetails(urlBar.getText(),"?",TimeAndDate.getTime(),TimeAndDate.getDate(),mailBar.getText());
 				list.add(newURL);
 				HTTPconThread thread = new HTTPconThread(list.size()+1, newURL, Integer.parseInt(timeBar.getText())*1000);
-				thread.start();
 			}else{
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Incorrect Fields Detected !");
@@ -135,7 +134,7 @@ public class Controller implements Initializable{
 		});
 
 		createLogButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-			logFile.createLog(table.getSelectionModel().getSelectedIndex());
+			logFile.createLog(table.getSelectionModel().getSelectedIndex()+1);
 						
 		});
 		refreshButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{

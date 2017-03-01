@@ -8,13 +8,20 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class mail {
+public class Mail {
+	private  String username ;
+	private  String password ;
+	private String from ;
+	private String to ;
+	public Mail(String from,String password, String to){
+		this.from=from;
+		this.to = to;
+		this.username = from;
+		this.password = password;
+		sendMail();
+	}
 
-	public static void main(String[] args) {
-
-		final String username = "naeemb7070@gmail.com";
-		final String password = "9994naeemb";
-
+	public void sendMail(){
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -22,28 +29,31 @@ public class mail {
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
+				new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
+				return new PasswordAuthentication(username,password);
 			}
-		  });
+		});
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("naeemb7070@gmail.com"));
+			message.setFrom(new InternetAddress(from));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("naeem.rashid.bloch@gmail.com"));
-			message.setSubject("Testing Subject");
-			message.setText("Dear Mail Crawler,"
-				+ "\n\n No spam to my email, please!");
+					InternetAddress.parse(to));
+			message.setSubject("Website Status Notification.");
+			message.setText("website is down .");
 
 			Transport.send(message);
 
 			System.out.println("Done");
 
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			System.out.println("Error sending email.");
+			e.printStackTrace();
 		}
 	}
+//	public static void main(String[] args){
+//		Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb","naeemr2014@namal.edu.pk");
+//	}
 }
