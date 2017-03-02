@@ -86,7 +86,6 @@ public class Controller implements Initializable{
 		date.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("date"));
 		time.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("time"));
 		email.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("email"));
-		table.setItems(list);
 		hBox.setPadding(new Insets(10,10,10,10));
 		hBox.setSpacing(10);
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
@@ -110,7 +109,6 @@ public class Controller implements Initializable{
 			DataBase.deleteUrl(((table.getSelectionModel().getSelectedIndex()+1)));
 			URLdetailsSelected = table.getSelectionModel().getSelectedItems();
 			URLdetailsSelected.forEach(allURLdetails::remove);
-			
 			createLogButton.setDisable(true);
 			deleteButton.setDisable(true);
 			
@@ -127,6 +125,7 @@ public class Controller implements Initializable{
 				alert.setTitle("Incorrect Fields Detected !");
 				alert.setContentText("Please Enter valid Fields.");
 				alert.showAndWait();
+				mailBar.clear(); urlBar.clear(); timeBar.clear();
 				
 			}
 			
@@ -141,16 +140,7 @@ public class Controller implements Initializable{
 			table.refresh();
 						
 		});
-//		list.addListener(new ListChangeListener<URLdetails>() {
-//
-//			@Override
-//			public void onChanged(javafx.collections.ListChangeListener.Change<? extends URLdetails> c) {
-//				if(c.wasUpdated()){
-//					System.out.println("updated");
-//					table.refresh();
-//				}
-//			}
-//		});
+		table.setItems(list);
 	}
 	public static ObservableList<URLdetails> getList() {
 		return list;

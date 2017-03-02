@@ -42,7 +42,7 @@ public class HTTPconThread {
 				testIt(obj.getUrl());
 				
 			}
-		}, 0, 1, TimeUnit.SECONDS);
+		}, 0, time, TimeUnit.SECONDS);
 	}
 	
 	private void testIt(String https_url){
@@ -68,6 +68,7 @@ public class HTTPconThread {
 			if(index!=-1){
 			Controller.getList().get(index).setStatus(responseMessage);
 			Controller.getList().get(index).setTime(TimeAndDate.getTime());
+//			Controller.getRefreshButton().fire();
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
 				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());
