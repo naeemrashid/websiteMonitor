@@ -18,6 +18,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 public class HTTPconThread {
 	private URLdetails obj;
@@ -31,16 +32,16 @@ public class HTTPconThread {
 	public HTTPconThread(int id,URLdetails obj,int time){
 		this.obj=obj;
 		this.id = id;
+		this.time=time;
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-	    executorService.scheduleAtFixedRate(new Runnable() {
-			
+	    executorService.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
 				if(Controller.getList().indexOf(obj)==-1){
 					executorService.shutdown();
 				}
 				testIt(obj.getUrl());
-				
+				System.out.println(time);
 			}
 		}, 0, time, TimeUnit.SECONDS);
 	}
@@ -68,7 +69,8 @@ public class HTTPconThread {
 			if(index!=-1){
 			Controller.getList().get(index).setStatus(responseMessage);
 			Controller.getList().get(index).setTime(TimeAndDate.getTime());
-//			Controller.getRefreshButton().fire();
+			Controller.getList().remove(index);
+			Controller.getList().add(index, obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
 				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());
@@ -78,8 +80,6 @@ public class HTTPconThread {
 	
 		} catch (MalformedURLException e) {
 			System.out.println(obj.getUrl()+"Invalid URL.");
-//			System.exit(1);
-			e.printStackTrace();
 		}catch(UnknownHostException e){
 			System.out.println(obj.getUrl()+" Cannot acess the website.\n Check your internet connection.");
 //			System.exit(1);

@@ -24,56 +24,60 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class Controller implements Initializable{
+
+
+	@FXML
+	private JFXButton createLogButton;
+	@FXML
+	private BorderPane borderPane;
+
+	@FXML
+	private  GridPane gridPane;
+
+	@FXML
+	private JFXTextField urlBar;
+
+	@FXML
+	private JFXTextField timeBar;
+
+	@FXML
+	private JFXButton addButton;
+
+	@FXML
+	private JFXTextField mailBar;
+
+	@FXML
+	private HBox hBox;
+
+	@FXML
+	private JFXButton deleteButton;
+
+	@FXML
+	private JFXButton refreshButton;
+	@FXML
+	private VBox vBox;
+	@FXML
+	private TableColumn<URLdetails, String> url;
+
+	@FXML
+	private TableColumn<URLdetails, String> status;
+
+	@FXML
+	private TableColumn<URLdetails, String> time;
+
+
+	@FXML
+	private TableColumn<URLdetails, String> date;
+
+	@FXML
+	private TableColumn<URLdetails, String> email;
+	@FXML
+	public TableView<URLdetails> table;
 	
-
-    @FXML
-    private JFXButton createLogButton;
-	   @FXML
-	    private BorderPane borderPane;
-
-	    @FXML
-	    private GridPane gridPane;
-
-	    @FXML
-	    private JFXTextField urlBar;
-
-	    @FXML
-	    private JFXTextField timeBar;
-
-	    @FXML
-	    private JFXButton addButton;
-
-	    @FXML
-	    private JFXTextField mailBar;
-
-	    @FXML
-	    private HBox hBox;
-
-	    @FXML
-	    private JFXButton deleteButton;
-
-	    @FXML
-	    private JFXButton refreshButton;
-
-	    @FXML
-	    private TableColumn<URLdetails, String> url;
-
-	    @FXML
-	    private TableColumn<URLdetails, String> status;
-
-	    @FXML
-	    private TableColumn<URLdetails, String> time;
-
-	   
-		@FXML
-	    private TableColumn<URLdetails, String> date;
-
-	    @FXML
-	    private TableColumn<URLdetails, String> email;
-	    @FXML
-	    private TableView<URLdetails> table;
+	
 	public static ObservableList<URLdetails> list = FXCollections.observableArrayList();
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -91,18 +95,18 @@ public class Controller implements Initializable{
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			deleteButton.setDisable(false);
 			createLogButton.setDisable(false);
-			
-			
+
+
 		});
 		table.addEventHandler(MouseEvent.MOUSE_EXITED, e ->{
 			if(table.getSelectionModel().isEmpty()){
-			deleteButton.setDisable(true);
-			createLogButton.setDisable(true);
+				deleteButton.setDisable(true);
+				createLogButton.setDisable(true);
 			}
-			
-			
+
+
 		});
-		
+
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			ObservableList<URLdetails> URLdetailsSelected , allURLdetails;
 			allURLdetails = table.getItems();
@@ -111,12 +115,12 @@ public class Controller implements Initializable{
 			URLdetailsSelected.forEach(allURLdetails::remove);
 			createLogButton.setDisable(true);
 			deleteButton.setDisable(true);
-			
+
 		});
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			FieldValidation validate = new FieldValidation();
 			if(validate.validateEmail(mailBar.getText())&& validate.validateTime(timeBar.getText())&& validate.validateUrl(urlBar.getText())){
-				DataBase.insertUrl(urlBar.getText(), mailBar.getText(),Integer.parseInt(timeBar.getText())*1000);
+				DataBase.insertUrl(urlBar.getText(), mailBar.getText(),Integer.parseInt(timeBar.getText()));
 				URLdetails newURL =new URLdetails(urlBar.getText(),"?",TimeAndDate.getTime(),TimeAndDate.getDate(),mailBar.getText());
 				list.add(newURL);
 				HTTPconThread thread = new HTTPconThread(list.size()+1, newURL, Integer.parseInt(timeBar.getText())*1000);
@@ -126,19 +130,30 @@ public class Controller implements Initializable{
 				alert.setContentText("Please Enter valid Fields.");
 				alert.showAndWait();
 				mailBar.clear(); urlBar.clear(); timeBar.clear();
-				
-			}
-			
-			
-		});
 
+			}
+
+
+		});
+		list.addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(ListChangeListener.Change change) {
+			while (change.next()) {
+				if(change.wasAdded()){
+					table.refresh();
+				}
+			}
+
+			}
+
+			});
 		createLogButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			logFile.createLog(table.getSelectionModel().getSelectedIndex()+1);
-						
+
 		});
 		refreshButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			table.refresh();
-						
+
 		});
 		table.setItems(list);
 	}
@@ -148,6 +163,13 @@ public class Controller implements Initializable{
 	public static void setList(ObservableList<URLdetails> list) {
 		Controller.list = list;
 	}
+	public TableView<URLdetails> getTable() {
+		return table;
+	}
+	public void setTable(TableView<URLdetails> table) {
+		this.table = table;
+	}
 	
-	 
+
+
 }
