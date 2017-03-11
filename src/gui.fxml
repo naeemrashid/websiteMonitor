@@ -50,11 +50,6 @@
                   <Font size="14.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="refreshButton" prefHeight="24.0" prefWidth="69.0" style="-fx-background-color: #009900;" text="Refresh" textFill="#363232">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXButton>
             <JFXButton fx:id="createLogButton" prefHeight="30.0" prefWidth="91.0" style="-fx-background-color: #009900;" text="Create Log" />
          </children>
          <padding>

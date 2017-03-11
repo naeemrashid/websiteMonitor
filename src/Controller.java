@@ -56,8 +56,6 @@ public class Controller implements Initializable{
 	private JFXButton deleteButton;
 
 	@FXML
-	private JFXButton refreshButton;
-	@FXML
 	private VBox vBox;
 	@FXML
 	private TableColumn<URLdetails, String> url;
@@ -149,10 +147,6 @@ public class Controller implements Initializable{
 			});
 		createLogButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			logFile.createLog(table.getSelectionModel().getSelectedIndex()+1);
-
-		});
-		refreshButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-			table.refresh();
 
 		});
 		table.setItems(list);
