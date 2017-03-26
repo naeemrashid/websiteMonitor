@@ -9,12 +9,22 @@ public class URLdetails {
 	private	StringProperty time;
 	private	StringProperty date;
 	private	StringProperty email;
-		public URLdetails(String url , String status,String time, String date ,String email){
+	private StringProperty acessTime;
+		
+		public URLdetails(String url , String status,String time, String date ,String email, String acessTime){
 			this.url = new SimpleStringProperty(url);
 			this.status = new SimpleStringProperty(status);
 			this.time = new SimpleStringProperty(time);
 			this.date = new SimpleStringProperty(date);
 			this.email = new SimpleStringProperty(email);
+			this.acessTime = new SimpleStringProperty(acessTime);
+		}
+		
+		public String getAcessTime() {
+			return acessTime.get();
+		}
+		public void setAcessTime(String acessTime) {
+			this.acessTime = new SimpleStringProperty(acessTime);
 		}
 		public String getUrl() {
 			return url.get();

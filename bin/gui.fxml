@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <top>
       <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -43,7 +43,7 @@
       </GridPane>
    </top>
    <bottom>
-      <HBox fx:id="hBox" prefHeight="36.0" prefWidth="691.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="hBox" prefHeight="50.0" prefWidth="766.0" BorderPane.alignment="CENTER">
          <children>
             <JFXButton fx:id="deleteButton" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: #009900;" text="Delete">
                <font>
@@ -65,6 +65,7 @@
           <TableColumn fx:id="time" prefWidth="84.0" text="TIME" />
             <TableColumn fx:id="date" prefWidth="108.0" text="DATE" />
             <TableColumn fx:id="email" prefWidth="233.0" text="EMAIL NOTIFICATION" />
+            <TableColumn fx:id="acessTime" prefWidth="120.0" text="Acess Time (milliseconds)" />
         </columns>
       </TableView>
    </center>

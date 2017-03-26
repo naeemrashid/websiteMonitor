@@ -7,6 +7,7 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.cert.Certificate;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
@@ -53,6 +54,7 @@ public class HTTPconThread {
 		try {
 			
 			url = new URL(https_url); // create url object for the given string	
+			long millisStart = Calendar.getInstance().getTimeInMillis();
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			if(https_url.startsWith("https")){
 				 connection = (HttpsURLConnection) url.openConnection();
@@ -65,10 +67,13 @@ public class HTTPconThread {
 			 responseCode = connection.getResponseCode();
 			System.out.println(obj.getUrl()+" is up. Response Code : " + responseMessage);
 			connection.disconnect();
+			long millisEnd = Calendar.getInstance().getTimeInMillis();
+			System.out.println("Response Time : "+(millisEnd-millisStart));
 			int index = Controller.getList().indexOf(obj);
 			if(index!=-1){
 			Controller.getList().get(index).setStatus(responseMessage);
 			Controller.getList().get(index).setTime(TimeAndDate.getTime());
+			Controller.getList().get(index).setAcessTime(""+((millisEnd-millisStart)));
 			Controller.getList().remove(index);
 			Controller.getList().add(index, obj);
 			DataBase.addLog(id,responseMessage);
@@ -79,20 +84,14 @@ public class HTTPconThread {
 			}
 	
 		} catch (MalformedURLException e) {
-			System.out.println(obj.getUrl()+"Invalid URL.");
+			System.out.println("Invalid URL.");
 		}catch(UnknownHostException e){
-			System.out.println(obj.getUrl()+" Cannot acess the website.\n Check your internet connection.");
-//			System.exit(1);
+			System.out.println("Unknown Host");
 		}catch(ConnectException e){
-			System.out.println("Connection TimeOut Occured.");
+			System.out.println("Connection TimeOut");
 		}
 		catch (IOException e) {
-			System.out.println(obj.getUrl()+" Error connecting with website.");
-			e.printStackTrace();
-		}
-		catch(Exception e){
-			System.out.println("hellow main");
-//			System.exit(1);
+			System.out.println("Internet Unavilabe");
 		}
 	}
 	private void setProxy(){

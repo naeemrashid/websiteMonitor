@@ -74,6 +74,8 @@ public class Controller implements Initializable{
 	private TableColumn<URLdetails, String> email;
 	@FXML
 	public TableView<URLdetails> table;
+	@FXML
+    private TableColumn<URLdetails, String> acessTime;
 	
 	
 	public static ObservableList<URLdetails> list = FXCollections.observableArrayList();
@@ -88,6 +90,7 @@ public class Controller implements Initializable{
 		date.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("date"));
 		time.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("time"));
 		email.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("email"));
+		acessTime.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("acessTime"));
 		hBox.setPadding(new Insets(10,10,10,10));
 		hBox.setSpacing(10);
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
@@ -119,7 +122,7 @@ public class Controller implements Initializable{
 			FieldValidation validate = new FieldValidation();
 			if(validate.validateEmail(mailBar.getText())&& validate.validateTime(timeBar.getText())&& validate.validateUrl(urlBar.getText())){
 				DataBase.insertUrl(urlBar.getText(), mailBar.getText(),Integer.parseInt(timeBar.getText()));
-				URLdetails newURL =new URLdetails(urlBar.getText(),"?",TimeAndDate.getTime(),TimeAndDate.getDate(),mailBar.getText());
+				URLdetails newURL =new URLdetails(urlBar.getText(),"?",TimeAndDate.getTime(),TimeAndDate.getDate(),mailBar.getText(),"0");
 				list.add(newURL);
 				HTTPconThread thread = new HTTPconThread(list.size()+1, newURL, Integer.parseInt(timeBar.getText())*1000);
 			}else{
