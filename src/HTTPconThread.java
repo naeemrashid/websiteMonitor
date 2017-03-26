@@ -26,6 +26,7 @@ public class HTTPconThread {
 	private int time;
 	private int id;
 	private boolean stop=false;
+	int index = 0;
 	
 //	public HTTPconThread(String url){
 //		this.testIt(url);
@@ -34,6 +35,7 @@ public class HTTPconThread {
 		this.obj=obj;
 		this.id = id;
 		this.time=time;
+		this.index = Controller.getList().indexOf(obj);
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	    executorService.scheduleWithFixedDelay(new Runnable() {
 			@Override
@@ -69,7 +71,7 @@ public class HTTPconThread {
 			connection.disconnect();
 			long millisEnd = Calendar.getInstance().getTimeInMillis();
 			System.out.println("Response Time : "+(millisEnd-millisStart));
-			int index = Controller.getList().indexOf(obj);
+//			 index = Controller.getList().indexOf(obj);
 			if(index!=-1){
 			Controller.getList().get(index).setStatus(responseMessage);
 			Controller.getList().get(index).setTime(TimeAndDate.getTime());
@@ -85,13 +87,17 @@ public class HTTPconThread {
 	
 		} catch (MalformedURLException e) {
 			System.out.println("Invalid URL.");
+			Controller.getList().get(index).setStatus("Invalid URL.");
 		}catch(UnknownHostException e){
 			System.out.println("Unknown Host");
+			Controller.getList().get(index).setStatus("Unknown Host");
 		}catch(ConnectException e){
 			System.out.println("Connection TimeOut");
+			Controller.getList().get(index).setStatus("Connection Timeout");
 		}
 		catch (IOException e) {
 			System.out.println("Internet Unavilabe");
+			Controller.getList().get(index).setStatus("Internet Unavilable");
 		}
 	}
 	private void setProxy(){
