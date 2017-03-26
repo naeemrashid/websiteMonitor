@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -39,7 +41,8 @@ public class Controller implements Initializable{
 
 	@FXML
 	private JFXTextField urlBar;
-
+    @FXML
+    private JFXButton chartBtn;
 	@FXML
 	private JFXTextField timeBar;
 
@@ -85,6 +88,7 @@ public class Controller implements Initializable{
 		content.fillData();
 		deleteButton.setDisable(true);
 		createLogButton.setDisable(true);
+		chartBtn.setDisable(true);
 		url.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("url"));
 		status.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("status"));
 		date.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("date"));
@@ -96,18 +100,21 @@ public class Controller implements Initializable{
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			deleteButton.setDisable(false);
 			createLogButton.setDisable(false);
+			chartBtn.setDisable(false);
 
 
 		});
-		table.addEventHandler(MouseEvent.MOUSE_EXITED, e ->{
-			if(table.getSelectionModel().isEmpty()){
-				deleteButton.setDisable(true);
-				createLogButton.setDisable(true);
+		table.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(oldValue!=newValue){
+					deleteButton.setDisable(true);
+					createLogButton.setDisable(true);
+					chartBtn.setDisable(true);
+				}
 			}
-
-
 		});
-
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			ObservableList<URLdetails> URLdetailsSelected , allURLdetails;
 			allURLdetails = table.getItems();
