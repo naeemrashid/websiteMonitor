@@ -180,6 +180,14 @@ import java.text.SimpleDateFormat;
 		}
 	
 		
+	}public static void closeConnection(){
+		try {
+			perp.close();
+			c.close();
+		} catch (SQLException e) {
+			System.err.println("Unable to close Connection");
+		}
+		
 	}
 //	public static void main (String[] args) throws SQLException{
 //		DataBase.CreateDataBase();

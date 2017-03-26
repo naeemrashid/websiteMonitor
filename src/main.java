@@ -19,6 +19,7 @@ public class main extends Application{
 	
 	public static void main(String[] args){
 		launch(args);
+		DataBase.closeConnection();
 		System.exit(1);
 	}
 

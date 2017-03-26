@@ -109,12 +109,28 @@ public class Controller implements Initializable{
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if(oldValue!=newValue){
-					deleteButton.setDisable(true);
-					createLogButton.setDisable(true);
-					chartBtn.setDisable(true);
+					deleteButton.setDisable(false);
+					createLogButton.setDisable(false);
+					chartBtn.setDisable(false);
 				}
 			}
 		});
+		urlBar.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
+			deleteButton.setDisable(true);
+			createLogButton.setDisable(true);
+			chartBtn.setDisable(true);
+		});
+		mailBar.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
+			deleteButton.setDisable(true);
+			createLogButton.setDisable(true);
+			chartBtn.setDisable(true);
+		});
+		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
+			deleteButton.setDisable(true);
+			createLogButton.setDisable(true);
+			chartBtn.setDisable(true);
+		});
+		
 		deleteButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			ObservableList<URLdetails> URLdetailsSelected , allURLdetails;
 			allURLdetails = table.getItems();
