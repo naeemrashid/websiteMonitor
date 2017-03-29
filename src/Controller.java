@@ -80,6 +80,7 @@ public class Controller extends Application{
 
 		CategoryAxis x = new CategoryAxis();
 		NumberAxis y = new NumberAxis();
+		y.setAutoRanging(true);
 		LineChart<?,?> lineChart = new LineChart<>(x, y);
 		 set1 = new XYChart.Series<>();
 		lineChart.setTitle("Website Status");
