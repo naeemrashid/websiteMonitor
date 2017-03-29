@@ -32,7 +32,7 @@ public class Controller implements Initializable{
 
 
 	@FXML
-	private JFXButton createLogButton;
+	private JFXButton createLogButton ;
 	@FXML
 	private BorderPane borderPane;
 
