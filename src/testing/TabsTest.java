@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTabPane;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -31,7 +30,7 @@ public class TabsTest extends Application{
 		x.setLabel("Visited Sites");
 		NumberAxis y = new NumberAxis();
 		y.setLabel("Hits");
-		LineChart<?,?> barchart = new LineChart<>(x, y);
+		LineChart<?,?> lineChart = new LineChart<>(x, y);
 		XYChart.Series set1 = new XYChart.Series<>();
 		set1.getData().add(new XYChart.Data("Jadi",302));
 		set1.getData().add(new XYChart.Data("Sana",242));
@@ -43,16 +42,16 @@ public class TabsTest extends Application{
 		set2.getData().add(new XYChart.Data("Shoaib",92));
 		set2.getData().add(new XYChart.Data("Sudo",42));
 		
-		barchart.setTitle("History Statistics");
+		lineChart.setTitle("History Statistics");
 		
-		barchart.getData().add(set1);
-		barchart.getData().add(set2);
+		lineChart.getData().add(set1);
+		lineChart.getData().add(set2);
 		JFXButton button = new JFXButton("add");
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			set2.getData().remove(0);
 			set2.getData().add(new XYChart.Data("chhala",45));
 		});
-		gPane.setCenter(barchart);
+		gPane.setCenter(lineChart);
 		gPane.setLeft(button);
 		
 		tab1.setContent(gPane);

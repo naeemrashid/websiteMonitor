@@ -23,7 +23,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 public class HTTPconThread {
 	private URLdetails obj;
-	private int time;
+	private double responseTime = 0.0;
 	private int id;
 	private boolean stop=false;
 	int index = 0;
@@ -34,7 +34,7 @@ public class HTTPconThread {
 	public HTTPconThread(int id,URLdetails obj,int time){
 		this.obj=obj;
 		this.id = id;
-		this.time=time;
+		this.responseTime=time;
 		this.index = Controller.getList().indexOf(obj);
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	    executorService.scheduleWithFixedDelay(new Runnable() {
@@ -70,14 +70,16 @@ public class HTTPconThread {
 			System.out.println(obj.getUrl()+" is up. Response Code : " + responseMessage);
 			connection.disconnect();
 			long millisEnd = Calendar.getInstance().getTimeInMillis();
+			responseTime = millisEnd-millisStart;
 			System.out.println("Response Time : "+(millisEnd-millisStart));
 //			 index = Controller.getList().indexOf(obj);
 			if(index!=-1){
 			Controller.getList().get(index).setStatus(responseMessage);
 			Controller.getList().get(index).setTime(TimeAndDate.getTime());
-			Controller.getList().get(index).setAcessTime(""+((millisEnd-millisStart)));
+			Controller.getList().get(index).setAcessTime(""+(responseTime));
 			Controller.getList().remove(index);
 			Controller.getList().add(index, obj);
+			Controller.addData(obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
 				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());

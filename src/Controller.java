@@ -17,6 +17,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -32,16 +36,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Controller extends Application{
-
+	private static XYChart.Series set1 = null;
 	public static ObservableList<URLdetails> list = FXCollections.observableArrayList();
-	
+	private static	TableView<URLdetails> table;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		JFXButton createLogButton = new JFXButton("Create Log");
 		BorderPane borderPane = new BorderPane();
 		GridPane gridPane = new GridPane();
 		JFXTextField urlBar = new JFXTextField();
-		JFXButton chartBtn = new JFXButton("Show Chart");
+		JFXButton chartBtn = new JFXButton("Chart");
 		JFXTextField timeBar = new JFXTextField();
 		JFXButton addButton = new JFXButton("Add");
 		JFXTextField mailBar = new JFXTextField();
@@ -57,7 +61,7 @@ public class Controller extends Application{
 		date.setPrefWidth(100);
 		TableColumn<URLdetails, String> email = new TableColumn<>("EMAIL NOTIFICATION");
 		email.setPrefWidth(200);
-		TableView<URLdetails> table = new TableView<>();
+		 table = new TableView<>();
 		TableColumn<URLdetails, String> acessTime  = new TableColumn<>("ACESS TIME(ms)");
 		acessTime.setPrefWidth(120);
 
@@ -74,6 +78,14 @@ public class Controller extends Application{
 		acessTime.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("acessTime"));
 
 
+		CategoryAxis x = new CategoryAxis();
+		NumberAxis y = new NumberAxis();
+		LineChart<?,?> lineChart = new LineChart<>(x, y);
+		 set1 = new XYChart.Series<>();
+		lineChart.setTitle("Website Status");
+		lineChart.getData().add(set1);
+		
+		
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			deleteButton.setDisable(false);
 			createLogButton.setDisable(false);
@@ -118,6 +130,21 @@ public class Controller extends Application{
 			deleteButton.setDisable(true);
 
 		});
+		
+		
+		chartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+			deleteButton.setDisable(true);
+			createLogButton.setDisable(true);
+			if(chartBtn.getText().equals("Chart")){
+				chartBtn.setText("Back");
+				borderPane.setCenter(lineChart);
+				System.out.println("hello world");
+			}else{
+				borderPane.setCenter(table);
+			}
+			
+		});
+		
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
 			FieldValidation validate = new FieldValidation();
 			if(validate.validateEmail(mailBar.getText())&& validate.validateTime(timeBar.getText())&& validate.validateUrl(urlBar.getText())){
@@ -154,21 +181,18 @@ public class Controller extends Application{
 		});
 
 
-		table.getColumns().addAll(url,status,date,time,email,acessTime);
-		table.setItems(list);
-
+		
 		gridPane.setHgap(4);
 		gridPane.add(mailBar, 0, 0);
 		gridPane.add(urlBar, 1, 0);
 		gridPane.add(timeBar, 2, 0);
 		gridPane.add(addButton, 3, 0);
-
-
 		HBox hBox = new HBox(deleteButton,createLogButton,chartBtn);
 		hBox.setPadding(new Insets(10,10,10,10));
 		hBox.setSpacing(10);
 
-
+		table.getColumns().addAll(url,status,date,time,email,acessTime);
+		table.setItems(list);
 		borderPane.setTop(gridPane);
 		borderPane.setCenter(table);
 		borderPane.setBottom(hBox);
@@ -184,11 +208,20 @@ public class Controller extends Application{
 	public static void setList(ObservableList<URLdetails> list) {
 		Controller.list = list;
 	}
-	
+	public static void addData(URLdetails obj){
+		if(set1.getData().size()==10){
+			set1.getData().remove(0);
+		}
+		if(table!=null && table.getSelectionModel().getSelectedItem().equals(obj)){
+			set1.getData().add(new XYChart.Data(obj.getTime(),Double.parseDouble(obj.getAcessTime())));	
+		}
+		
+	}
 	public static void main(String[] args){
 		launch(args);
 		System.exit(1);
 	}
+	
 	
 	
 
