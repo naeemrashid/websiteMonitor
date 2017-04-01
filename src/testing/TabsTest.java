@@ -1,9 +1,16 @@
 package testing;
 
+import java.text.SimpleDateFormat;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -15,7 +22,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class TabsTest extends Application{
-
+	public XYChart.Series set2;
+	public LineChart<?,?> lineChart;
 	@Override
 	public void start(Stage stage) throws Exception {
 		BorderPane root = new BorderPane();
@@ -30,21 +38,15 @@ public class TabsTest extends Application{
 		x.setLabel("Visited Sites");
 		NumberAxis y = new NumberAxis();
 		y.setLabel("Hits");
-		LineChart<?,?> lineChart = new LineChart<>(x, y);
-		XYChart.Series set1 = new XYChart.Series<>();
-		set1.getData().add(new XYChart.Data("Jadi",302));
-		set1.getData().add(new XYChart.Data("Sana",242));
-		set1.getData().add(new XYChart.Data("Badr",32));
-		set1.getData().add(new XYChart.Data("Naeem",102));
-		XYChart.Series set2 = new XYChart.Series<>();
+		lineChart = new LineChart<>(x, y);
+		set2 = new XYChart.Series<>();
 		set2.getData().add(new XYChart.Data("Ramzan",62));
-		set2.getData().add(new XYChart.Data("Hussan",421));
-		set2.getData().add(new XYChart.Data("Shoaib",92));
-		set2.getData().add(new XYChart.Data("Sudo",42));
+//		set2.getData().add(new XYChart.Data("Hussan",421));
+//		set2.getData().add(new XYChart.Data("Shoaib",92));
+//		set2.getData().add(new XYChart.Data("Sudo",42));
 		
 		lineChart.setTitle("History Statistics");
 		
-		lineChart.getData().add(set1);
 		lineChart.getData().add(set2);
 		JFXButton button = new JFXButton("add");
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
@@ -61,10 +63,24 @@ public class TabsTest extends Application{
 		Scene scene = new Scene(root,800,600);
 		stage.setScene(scene);
 		stage.show();
+		
+		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	    executorService.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+				Random rand = new Random();
+				System.out.println(set2.getData().size());
+				java.util.Date date = new java.util.Date();
+				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+				set2.getData().add(new XYChart.Data(timeFormat.format(date),rand.nextInt(20)));	
+			}
+		}, 0, 1, TimeUnit.SECONDS);
 	}
+	
 	
 	public static void main(String[] args){
 		launch(args);
+		System.exit(1);
 	}
 
 }

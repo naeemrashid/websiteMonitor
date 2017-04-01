@@ -24,6 +24,7 @@ import javafx.collections.ObservableList;
 public class HTTPconThread {
 	private URLdetails obj;
 	private double responseTime = 0.0;
+	private int time;
 	private int id;
 	private boolean stop=false;
 	int index = 0;
@@ -34,7 +35,7 @@ public class HTTPconThread {
 	public HTTPconThread(int id,URLdetails obj,int time){
 		this.obj=obj;
 		this.id = id;
-		this.responseTime=time;
+		this.time=time;
 		this.index = Controller.getList().indexOf(obj);
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	    executorService.scheduleWithFixedDelay(new Runnable() {
@@ -44,7 +45,6 @@ public class HTTPconThread {
 					executorService.shutdown();
 				}
 				testIt(obj.getUrl());
-				System.out.println(time);
 			}
 		}, 0, time, TimeUnit.SECONDS);
 	}

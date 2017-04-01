@@ -39,6 +39,7 @@ public class Controller extends Application{
 	private static XYChart.Series set1 = null;
 	public static ObservableList<URLdetails> list = FXCollections.observableArrayList();
 	private static	TableView<URLdetails> table;
+	private static URLdetails selected=null;
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		JFXButton createLogButton = new JFXButton("Create Log");
@@ -91,6 +92,7 @@ public class Controller extends Application{
 			deleteButton.setDisable(false);
 			createLogButton.setDisable(false);
 			chartBtn.setDisable(false);
+			selected = table.getSelectionModel().getSelectedItem();
 
 
 		});
@@ -139,9 +141,9 @@ public class Controller extends Application{
 			if(chartBtn.getText().equals("Chart")){
 				chartBtn.setText("Back");
 				borderPane.setCenter(lineChart);
-				System.out.println("hello world");
-			}else{
+			}else if (chartBtn.getText().equals("Back")){
 				borderPane.setCenter(table);
+				chartBtn.setText("Chart");
 			}
 			
 		});
@@ -213,12 +215,14 @@ public class Controller extends Application{
 		if(set1.getData().size()==10){
 			set1.getData().remove(0);
 		}
-		if(table!=null && table.getSelectionModel().getSelectedItem().equals(obj)){
+		if( selected.equals(obj)){
+			System.out.println("index selected.");
 			set1.getData().add(new XYChart.Data(obj.getTime(),Double.parseDouble(obj.getAcessTime())));	
 		}
 		
 	}
 	public static void main(String[] args){
+		
 		launch(args);
 		System.exit(1);
 	}
