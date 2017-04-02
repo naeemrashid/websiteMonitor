@@ -55,6 +55,7 @@ public class HTTPconThread {
 		URL url;
 		try {
 			
+			
 			url = new URL(https_url); // create url object for the given string	
 			long millisStart = Calendar.getInstance().getTimeInMillis();
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -79,7 +80,6 @@ public class HTTPconThread {
 			Controller.getList().get(index).setAcessTime(""+(responseTime));
 			Controller.getList().remove(index);
 			Controller.getList().add(index, obj);
-			Controller.addData(obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
 				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());

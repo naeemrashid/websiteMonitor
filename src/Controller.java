@@ -36,7 +36,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Controller extends Application{
-	private static XYChart.Series set1 = null;
+	private static XYChart.Series set = null;
 	public static ObservableList<URLdetails> list = FXCollections.observableArrayList();
 	private static	TableView<URLdetails> table;
 	private static URLdetails selected=null;
@@ -78,14 +78,13 @@ public class Controller extends Application{
 		email.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("email"));
 		acessTime.setCellValueFactory(new PropertyValueFactory<URLdetails,String>("acessTime"));
 
-
 		CategoryAxis x = new CategoryAxis();
 		NumberAxis y = new NumberAxis();
 		y.setAutoRanging(true);
 		LineChart<?,?> lineChart = new LineChart<>(x, y);
-		 set1 = new XYChart.Series<>();
+		 set = new XYChart.Series<>();
 		lineChart.setTitle("Website Status");
-		lineChart.getData().add(set1);
+		lineChart.getData().add(set);
 		
 		
 		table.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
@@ -172,6 +171,14 @@ public class Controller extends Application{
 				while (change.next()) {
 					if(change.wasAdded()){
 						table.refresh();
+						System.out.println("entered in change list/chart data");
+						ObservableList<URLdetails> changeList = change.getList();
+						for(URLdetails list: changeList){
+							if(selected!=null && selected.getUrl().equals(list.getUrl())){
+								set.getData().add(new XYChart.Data(list.getTime(),Double.parseDouble(list.getAcessTime())));
+							}
+						}
+						
 					}
 				}
 
@@ -211,20 +218,20 @@ public class Controller extends Application{
 	public static void setList(ObservableList<URLdetails> list) {
 		Controller.list = list;
 	}
-	public static void addData(URLdetails obj){
-		if(set1.getData().size()==10){
-			set1.getData().remove(0);
-		}
-		if( selected.equals(obj)){
-			System.out.println("index selected.");
-			set1.getData().add(new XYChart.Data(obj.getTime(),Double.parseDouble(obj.getAcessTime())));	
-		}
-		
-	}
+//			set.getData().add(new XYChart.Data(obj.getTime(),obj.getAcessTime()));	
 	public static void main(String[] args){
 		
 		launch(args);
 		System.exit(1);
+	}
+	public static URLdetails getSelected() {
+		return selected;
+	}
+	public static XYChart.Series getSet() {
+		return set;
+	}
+	public static void setSet(XYChart.Series set) {
+		Controller.set = set;
 	}
 	
 	
