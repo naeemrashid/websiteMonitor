@@ -82,7 +82,7 @@ public class HTTPconThread {
 			Controller.getList().add(index, obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
-				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());
+				Mail mail = new Mail("naeemb7070@gmail.com","",obj.getEmail());
 				System.out.println(obj.getUrl()+" website is down.Mail sent.");
 			}
 			}
@@ -102,7 +102,7 @@ public class HTTPconThread {
 			Controller.getList().get(index).setStatus("Internet Unavilable");
 		}
 	}
-	private void setProxy(){
+	public void setProxy(){
 		Properties systemProperties = System.getProperties();
 		systemProperties.setProperty("http.proxyHost","172.16.0.2");
 		systemProperties.setProperty("http.proxyPort","8080");
