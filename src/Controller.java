@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,10 +47,13 @@ public class Controller extends Application{
 		BorderPane borderPane = new BorderPane();
 		GridPane gridPane = new GridPane();
 		JFXTextField urlBar = new JFXTextField();
+		urlBar.setPromptText("http://www.example.com");
 		JFXButton chartBtn = new JFXButton("Chart");
 		JFXTextField timeBar = new JFXTextField();
+		timeBar.setPromptText("30");
 		JFXButton addButton = new JFXButton("Add");
 		JFXTextField mailBar = new JFXTextField();
+		mailBar.setPromptText("example123@gmail.com");
 		JFXButton deleteButton = new JFXButton("Delete");
 		VBox vBox = new VBox();
 		TableColumn<URLdetails, String> url = new TableColumn<>("URL");
@@ -175,7 +179,11 @@ public class Controller extends Application{
 						ObservableList<URLdetails> changeList = change.getList();
 						for(URLdetails list: changeList){
 							if(selected!=null && selected.getUrl().equals(list.getUrl())){
+								Platform.runLater(new Runnable() {
+									public void run() {
 								set.getData().add(new XYChart.Data(list.getTime(),Double.parseDouble(list.getAcessTime())));
+									}
+								}); 
 							}
 						}
 						
@@ -208,9 +216,12 @@ public class Controller extends Application{
 		borderPane.setBottom(hBox);
 		BorderPane root = new BorderPane();
 		root.setCenter(borderPane);
+		root.getStylesheets().add("Styles.css");
 		Scene scene = new Scene(root,809,379);
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
+		DataBase.closeConnection();
 	}
 	public static ObservableList<URLdetails> getList() {
 		return list;

@@ -16,7 +16,7 @@ public class tableContent {
 				 System.out.println(obj.getEmail());
 				 Controller.list.add(obj);
 				HTTPconThread thread =  new HTTPconThread(rs.getInt(1), obj,rs.getInt(3));
-				thread.setProxy();
+//				thread.setProxy();
 			}
 		}catch(Exception e){
 			

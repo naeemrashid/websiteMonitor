@@ -5,17 +5,18 @@
 	import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 	public class DataBase
 	{
 		private static Connection c = null;
 		private static PreparedStatement perp=null;
-		private static java.util.Date date = new java.util.Date();
-		private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		
 		public DataBase(){
 			CreateDataBase();
 			createLog();
+		}
+		private static Connection getConnection() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		      return DriverManager.getConnection("jdbc:mysql://localhost:3306/pdrg","root","");
 		}
 
 	//------------------------------------------------------Creating SQLITE DATABASE and TABLE--------------------------------------//
@@ -23,23 +24,15 @@ import java.text.SimpleDateFormat;
 		{		
 			try
 			{
-				  Class.forName("org.sqlite.JDBC");
-			      c = DriverManager.getConnection("jdbc:sqlite:database.db");
-//			      System.out.println("Opened database successfully");
+				c = getConnection();
 			      Statement stat = c.createStatement();
-					ResultSet res = stat.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='url'");
-					if(!res.next()){
-			      perp=c.prepareStatement("CREATE TABLE if not exists url( url_id INTEGER PRIMARY KEY AUTOINCREMENT"
+			      perp=c.prepareStatement("CREATE TABLE if not exists url( url_id INTEGER PRIMARY KEY AUTO_INCREMENT"
 			      		+ ",url text,"
 //			      		+ "status varchar(20)"
 			      		+ "time INTEGER,"
 //			      		+ "Date DEFAULT CURRENT_DATE,"
 			      		+ "email varchar (40) );");
 			      perp.executeUpdate();
-//			      System.out.println("table created");
-			      perp.close();
-					}
-					c.close();
 			     
 			}
 			catch(Exception e)
@@ -52,24 +45,12 @@ import java.text.SimpleDateFormat;
 		public static void createLog(){
 			try
 			{
-				  Class.forName("org.sqlite.JDBC");
-			      c = DriverManager.getConnection("jdbc:sqlite:database.db");
-//			      System.out.println("Opened database successfully for Log");
-			      Statement stat = c.createStatement();
-					ResultSet res = stat.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='log'");
-					System.out.println("hello");
-					if(!res.next()){
-						System.out.println("hello");
+				c = getConnection();
 			      perp=c.prepareStatement("CREATE TABLE if not exists log( url_id INTEGER , "
-//			      		+ " FOREIGN KEY(url_id) REFERENCES url(url_id),"
 			      		+ "status varchar(20)"
 			      		+ ",time varchar (10),"
-			      		+ "Date DEFAULT CURRENT_DATE );");
+			      		+ "Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP );");
 			      perp.executeUpdate();
-//			      System.out.println("Log table created.");
-			      perp.close();
-					}
-					c.close();
 			     
 			}
 			catch(Exception e)
@@ -82,8 +63,7 @@ import java.text.SimpleDateFormat;
 		public static void addLog(int url_id , String status){
 			try
 			{
-				  Class.forName("org.sqlite.JDBC");
-			      c = DriverManager.getConnection("jdbc:sqlite:database.db");
+				c = getConnection();
 				  String insert="insert into log(url_id,status,time)"+"values(?,?,?)";
 				  String time= TimeAndDate.getTime();
 			      perp=c.prepareStatement(insert);
@@ -106,9 +86,8 @@ import java.text.SimpleDateFormat;
 			
 			try
 			{
-				  Class.forName("org.sqlite.JDBC");
-			      c = DriverManager.getConnection("jdbc:sqlite:database.db");
-				  String insert="insert or replace into url(url,time,email)"+"values(?,?,?)";
+				c = getConnection();
+				  String insert="insert into url(url,time,email)"+"values(?,?,?)";
 				  String time= TimeAndDate.getTime();
 			      perp=c.prepareStatement(insert);
 			      perp.setString(1, url);
@@ -116,7 +95,6 @@ import java.text.SimpleDateFormat;
 			      perp.setString(3,email);
 			      perp.executeUpdate();
 //			      System.out.println("data has been inserted");
-			      c.close();
 			}
 			catch(Exception e)
 			{
@@ -131,8 +109,7 @@ import java.text.SimpleDateFormat;
 		ResultSet rs=null;
 		try
 		{
-			 Class.forName("org.sqlite.JDBC");
-		     c = DriverManager.getConnection("jdbc:sqlite:database.db");
+			c = getConnection();
 			 String str="select * from url ";
 		     perp=c.prepareStatement(str);
 		     rs=perp.executeQuery();
@@ -147,8 +124,7 @@ import java.text.SimpleDateFormat;
 		ResultSet rs=null;
 		try
 		{
-			 Class.forName("org.sqlite.JDBC");
-		     c = DriverManager.getConnection("jdbc:sqlite:database.db");
+			c = getConnection();
 			 String str="select status,time,Date from log where url_id ="+id;
 		     perp=c.prepareStatement(str);
 		     rs=perp.executeQuery();
@@ -165,13 +141,11 @@ import java.text.SimpleDateFormat;
 
 		try
 		{
-			  Class.forName("org.sqlite.JDBC");
-		      c = DriverManager.getConnection("jdbc:sqlite:database.db");
+			c = getConnection();
 			  String delete="delete from  url where url_id = ?";
 		      perp=c.prepareStatement(delete);
 		      perp.setInt(1, id);
 		      perp.execute();
-		      c.close();
 		      System.out.println("url deleted.");
 		}
 		catch(Exception e)
@@ -189,25 +163,17 @@ import java.text.SimpleDateFormat;
 		}
 		
 	}
-//	public static void main (String[] args) throws SQLException{
+//	public static void main(String[] args){
 //		DataBase.CreateDataBase();
-//		DataBase.insertUrl("https://www.namal.edu.pk/", "naeeemb7070@gmail.com",120*1000);
-//		DataBase.insertUrl("https://www.facebook.com/", "naeeemb7070@gmail.com",120*1000);
-//		DataBase.insertUrl("https://www.twitter.com/","naeeemb7070@gmail.com",120*1000);
-//		DataBase.insertUrl("https://www.google.com/","naeeemb7070@gmail.com",120*1000);
 //		DataBase.createLog();
-//		DataBase.addLog(1, "Ok");
-//		try{
-//		ResultSet set = DataBase.showURLS();
-//		while(set.next()){
-//			System.out.println(set.getString(1)+"  "+set.getString(2)+"  "+set.getString(3));
+//		ResultSet result = DataBase.getLog(0);
+//		try {
+//			while(result.next()){
+//				System.out.println(result.getString(2));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
 //		}
-//		}catch(Exception e){
-//			System.out.println("exceptions");
-//			
-//		}
-//			
-//		
 //		
 //	}
 	}

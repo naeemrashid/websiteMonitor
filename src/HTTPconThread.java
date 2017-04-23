@@ -82,7 +82,7 @@ public class HTTPconThread {
 			Controller.getList().add(index, obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
-				Mail mail = new Mail("naeemb7070@gmail.com","",obj.getEmail());
+				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());
 				System.out.println(obj.getUrl()+" website is down.Mail sent.");
 			}
 			}
@@ -96,6 +96,8 @@ public class HTTPconThread {
 		}catch(ConnectException e){
 			System.out.println("Connection TimeOut");
 			Controller.getList().get(index).setStatus("Connection Timeout");
+		}catch(IllegalStateException ex){
+			System.err.println("Illegal state occured.");
 		}
 		catch (IOException e) {
 			System.out.println("Internet Unavilabe");
