@@ -82,7 +82,7 @@ public class HTTPconThread {
 			Controller.getList().add(index, obj);
 			DataBase.addLog(id,responseMessage);
 			if(responseCode==HttpsURLConnection.HTTP_UNAVAILABLE){
-				Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb",obj.getEmail());
+				Mail mail = new Mail("example@gmail.com","password",obj.getEmail());
 				System.out.println(obj.getUrl()+" website is down.Mail sent.");
 			}
 			}
