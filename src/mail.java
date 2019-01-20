@@ -53,7 +53,5 @@ public class Mail {
 			e.printStackTrace();
 		}
 	}
-//	public static void main(String[] args){
-//		Mail mail = new Mail("naeemb7070@gmail.com","9994naeemb","naeemr2014@namal.edu.pk");
-//	}
+
 }
